@@ -30,7 +30,7 @@ public class KubeMQConfig {
 
     @Bean
     public Channel channel() {
-        return new Channel("channel-information", "client-information", true, address);
+        return new Channel("chanel-images-request", "chanel-images-request", true, address);
     }
 
     String getAddress() {
@@ -38,6 +38,7 @@ public class KubeMQConfig {
     }
 
     void setAddress(String address) {
+        System.out.println("addres: "+address);
         this.address = address;
     }
 }

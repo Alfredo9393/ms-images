@@ -34,10 +34,15 @@ public class ListenerComponent implements StreamObserver<EventReceive> {
     private static final Logger LOG = LoggerFactory.getLogger(ListenerComponent.class);
 
     private Subscriber subscriber;
-        
+       
     @Autowired
     private ImagesService imagesService;
-        
+    
+    public ListenerComponent(Subscriber subscriber, ImagesService imagesService) {
+        this.subscriber = subscriber;
+        this.imagesService = imagesService;
+    }
+    
     @PostConstruct
     public void init() {                
         SubscribeRequest subscribeRequest = new SubscribeRequest();
@@ -46,10 +51,11 @@ public class ListenerComponent implements StreamObserver<EventReceive> {
         subscribeRequest.setSubscribeType(SubscribeType.EventsStore);
         subscribeRequest.setEventsStoreType(EventsStoreType.StartNewOnly);
         try {
-            LOG.info("subscriber: chanel-images-request ");
+            LOG.info("subscriber: chanel-images-request "+objectToJson(subscribeRequest));
             subscriber.SubscribeToEvents(subscribeRequest, this);
         } catch (ServerAddressNotSuppliedException | SSLException e) {
-            LOG.info("Error subscriber: chanel-images-request "+e);
+            LOG.info("Error subscriber: chanel-images-request ");
+            System.out.println(e);
         }
     }
     
@@ -75,6 +81,9 @@ public class ListenerComponent implements StreamObserver<EventReceive> {
     public void onCompleted() {
     }
     
-
+    private static String objectToJson(Object obj) {
+        Gson gson = new Gson();
+        return gson.toJson(obj);
+    }
     
 }
