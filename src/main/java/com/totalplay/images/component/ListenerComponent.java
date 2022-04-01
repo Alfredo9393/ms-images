@@ -6,9 +6,6 @@
 package com.totalplay.images.component;
 
 import com.google.gson.Gson;
-import org.springframework.stereotype.Component;
-
-
 import com.totalplay.images.service.ImagesService;
 import io.grpc.stub.StreamObserver;
 import io.kubemq.sdk.basic.ServerAddressNotSuppliedException;
@@ -25,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+
 /**
  *
  * @author APerez
@@ -34,7 +33,7 @@ public class ListenerComponent implements StreamObserver<EventReceive> {
     private static final Logger LOG = LoggerFactory.getLogger(ListenerComponent.class);
 
     private Subscriber subscriber;
-       
+    
     @Autowired
     private ImagesService imagesService;
     
@@ -61,7 +60,7 @@ public class ListenerComponent implements StreamObserver<EventReceive> {
     
     @Override
     public void onNext(EventReceive eventReceive) {
-        LOG.info("  *********** Event: chanel-images-request ***********    ");
+        LOG.info("  *********** Event: [chanel-images-request] ***********    ");
         try {
             LOG.info("Body: %s {} ", Converter.FromByteArray(eventReceive.getBody()));
             String idcommerce =(String)Converter.FromByteArray(eventReceive.getBody());

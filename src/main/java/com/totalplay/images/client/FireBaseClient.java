@@ -8,7 +8,6 @@ package com.totalplay.images.client;
 import com.totalplay.images.model.ImagesModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -16,7 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  *
  * @author APerez
  */
-@FeignClient(name = "ms-imagesfirebase", url="http://10.214.9.143:8090"  
+@FeignClient(name = "ms-imagesfirebase", 
+        url="http://10.214.9.143:8090"  
 //        url="http://localhost:8090"
 ,fallback = FallbackFireBaseClient.class )
 public interface FireBaseClient {

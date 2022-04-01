@@ -30,7 +30,7 @@ public class KubeMQConfig {
 
     @Bean
     public Channel channel() {
-        return new Channel("chanel-images-request", "chanel-images-request", true, address);
+        return new Channel("chanel-images-response", "client-images-response", true, address);
     }
 
     String getAddress() {
