@@ -32,6 +32,11 @@ public class KubeMQConfig {
     public Channel channel() {
         return new Channel("chanel-images-response", "client-images-response", true, address);
     }
+    
+    @Bean
+    public Queue queue() throws ServerAddressNotSuppliedException, SSLException {
+        return new Queue("chanel-images-request", "client-images-request", address);
+    }
 
     String getAddress() {
         return address;

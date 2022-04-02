@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author APerez
  */
 @FeignClient(name = "ms-imagesfirebase", 
-        url="http://10.214.9.143:8090"  
-//        url="http://localhost:8090"
+//        url="http://10.214.9.143:8090"  
+        url="http://localhost:8090"
 ,fallback = FallbackFireBaseClient.class )
 public interface FireBaseClient {
         @RequestMapping(
-            value = "/imagesfirebase", //imagesfirebase
+            value = "/storequery", //imagesfirebase
             method = RequestMethod.POST,
             consumes = "application/json",
             produces = "application/json")

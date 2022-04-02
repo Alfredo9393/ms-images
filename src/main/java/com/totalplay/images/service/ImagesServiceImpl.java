@@ -10,7 +10,9 @@ import com.totalplay.images.model.ImagesModel;
 import io.kubemq.sdk.basic.ServerAddressNotSuppliedException;
 import io.kubemq.sdk.event.Channel;
 import io.kubemq.sdk.event.Event;
+import io.kubemq.sdk.queue.Message;
 import io.kubemq.sdk.queue.Queue;
+import io.kubemq.sdk.queue.SendMessageResult;
 import io.kubemq.sdk.tools.Converter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -59,24 +61,34 @@ public class ImagesServiceImpl implements ImagesService{
 
     @Override
     public void publishResultImages(Object object) {
-        Event event = new Event();
-        event.setEventId(getid());
+//        Event event = new Event();
+//        event.setEventId(getid());
+//
+//        try {
+//            
+//            System.out.println("set body: [chanel-images-response]");
+//            event.setBody(Converter.ToByteArray(object));
+//        } catch (IOException e) {
+//            System.out.println("Error publish [chanel-images-response]");
+//            System.out.println(e);
+//        }
+//
+//        try {
+//            System.out.println("publish Message in [chanel-images-response]");
+//            channel.SendEvent(event); 
+//        } catch (SSLException | ServerAddressNotSuppliedException e) {
+//            System.out.println("Error publish [chanel-images-response]");
+//            System.out.println(e);
+//        }
+    	
+    	try {
+    		Queue queue = new Queue("chanel-images-response", "chanel-images-response", "localhost:50000");
+        	//System.out.println("Sending: {}", idCommerce);
+            final SendMessageResult result = queue.SendQueueMessage(new Message()
+                    .setBody(Converter.ToByteArray(object)));
 
-        try {
-            
-            System.out.println("set body: [chanel-images-response]");
-            event.setBody(Converter.ToByteArray(object));
-        } catch (IOException e) {
-            System.out.println("Error publish [chanel-images-response]");
-            System.out.println(e);
-        }
+        } catch (ServerAddressNotSuppliedException | IOException e) {
 
-        try {
-            System.out.println("publish Message in [chanel-images-response]");
-            channel.SendEvent(event); 
-        } catch (SSLException | ServerAddressNotSuppliedException e) {
-            System.out.println("Error publish [chanel-images-response]");
-            System.out.println(e);
         }
     }
     
