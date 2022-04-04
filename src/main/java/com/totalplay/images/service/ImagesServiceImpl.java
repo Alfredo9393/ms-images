@@ -61,34 +61,24 @@ public class ImagesServiceImpl implements ImagesService{
 
     @Override
     public void publishResultImages(Object object) {
-//        Event event = new Event();
-//        event.setEventId(getid());
-//
-//        try {
-//            
-//            System.out.println("set body: [chanel-images-response]");
-//            event.setBody(Converter.ToByteArray(object));
-//        } catch (IOException e) {
-//            System.out.println("Error publish [chanel-images-response]");
-//            System.out.println(e);
-//        }
-//
-//        try {
-//            System.out.println("publish Message in [chanel-images-response]");
-//            channel.SendEvent(event); 
-//        } catch (SSLException | ServerAddressNotSuppliedException e) {
-//            System.out.println("Error publish [chanel-images-response]");
-//            System.out.println(e);
-//        }
-    	
-    	try {
-    		Queue queue = new Queue("chanel-images-response", "chanel-images-response", "localhost:50000");
-        	//System.out.println("Sending: {}", idCommerce);
-            final SendMessageResult result = queue.SendQueueMessage(new Message()
-                    .setBody(Converter.ToByteArray(object)));
+        Event event = new Event();
+        event.setEventId(getid());
 
-        } catch (ServerAddressNotSuppliedException | IOException e) {
+        try {
+            
+            System.out.println("set body: [chanel-images-response]");
+            event.setBody(Converter.ToByteArray(object));
+        } catch (IOException e) {
+            System.out.println("Error publish [chanel-images-response]");
+            System.out.println(e);
+        }
 
+        try {
+            System.out.println("publish Message in [chanel-images-response]");
+            channel.SendEvent(event); 
+        } catch (SSLException | ServerAddressNotSuppliedException e) {
+            System.out.println("Error publish [chanel-images-response]");
+            System.out.println(e);
         }
     }
     

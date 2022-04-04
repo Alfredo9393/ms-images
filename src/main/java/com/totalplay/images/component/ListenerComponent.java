@@ -52,62 +52,33 @@ public class ListenerComponent implements StreamObserver<EventReceive> {
     
     @PostConstruct
     public void init() {                
-//        SubscribeRequest subscribeRequest = new SubscribeRequest();
-//        subscribeRequest.setChannel("chanel-images-request");
-//        subscribeRequest.setClientID("client-images-request");
-//        subscribeRequest.setSubscribeType(SubscribeType.EventsStore);
-//        subscribeRequest.setEventsStoreType(EventsStoreType.StartNewOnly);
-//        try {
-//            LOG.info("subscriber: chanel-images-request "+objectToJson(subscribeRequest));
-//            subscriber.SubscribeToEvents(subscribeRequest, this);
-//        } catch (ServerAddressNotSuppliedException | SSLException e) {
-//            LOG.info("Error subscriber: chanel-images-request ");
-//            System.out.println(e);
-//        }
+        SubscribeRequest subscribeRequest = new SubscribeRequest();
+        subscribeRequest.setChannel("chanel-images-request");
+        subscribeRequest.setClientID("client-images-request");
+        subscribeRequest.setSubscribeType(SubscribeType.EventsStore);
+        subscribeRequest.setEventsStoreType(EventsStoreType.StartNewOnly);
+        try {
+            LOG.info("subscriber: chanel-images-request "+objectToJson(subscribeRequest));
+            subscriber.SubscribeToEvents(subscribeRequest, this);
+        } catch (ServerAddressNotSuppliedException | SSLException e) {
+            LOG.info("Error subscriber: chanel-images-request ");
+            System.out.println(e);
+        }
     }
     
     @Override
     public void onNext(EventReceive eventReceive) {
-//        LOG.info("  *********** Event: [chanel-images-request] ***********    ");
-//        try {
-//            LOG.info("Body: %s {} ", Converter.FromByteArray(eventReceive.getBody()));
-//            String idcommerce =(String)Converter.FromByteArray(eventReceive.getBody());
-//            LOG.info("idcommerce idcommerce: "+idcommerce );
-//            imagesService.getImages(idcommerce);
-//        } catch (IOException | ClassNotFoundException e) {
-//            LOG.error("Error EventReceive [chanel-images-request]", e);
-//        }
+        LOG.info("  *********** Event: [chanel-images-request] ***********    ");
+        try {
+            LOG.info("Body: %s {} ", Converter.FromByteArray(eventReceive.getBody()));
+            String idcommerce =(String)Converter.FromByteArray(eventReceive.getBody());
+            LOG.info("idcommerce idcommerce: "+idcommerce );
+            imagesService.getImages(idcommerce);
+        } catch (IOException | ClassNotFoundException e) {
+            LOG.error("Error EventReceive [chanel-images-request]", e);
+        }
 
     }
-    
-    @PostConstruct
-	public void listen() {
-		taskExecutor.execute(() -> {
-			while (true) {
-			    try {
-                    Transaction transaction = queue.CreateTransaction();
-                    TransactionMessagesResponse response = transaction.Receive(10, 10);
-                    if (response.getMessage().getBody().length > 0) {
-                        String idcommerce = (String) Converter.FromByteArray(response.getMessage().getBody());
-                        LOG.info("Processed: {}", idcommerce);
-                        imagesService.getImages(idcommerce);
-                        transaction.AckMessage();
-//                        Event event = new Event();
-//                        event.setEventId(response.getMessage().getMessageID());
-//                        event.setBody(Converter.ToByteArray(order));
-//						LOGGER.info("Sending event: id={}", event.getEventId());
-//                        channel.SendEvent(event);
-
-                            //transaction.RejectMessage();
-                    }
-                    Thread.sleep(10000);
-                } catch (Exception e) {
-					LOG.error("Error", e);
-                }
-			}
-		});
-
-	}
 
     @Override
     public void onError(Throwable thrwbl) {
