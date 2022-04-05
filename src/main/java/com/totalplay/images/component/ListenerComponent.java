@@ -90,7 +90,7 @@ public class ListenerComponent implements StreamObserver<EventReceive> {
                     if (response.getMessage().getBody().length > 0) {
                         String idcommerce = (String) Converter.FromByteArray(response.getMessage().getBody());
                         LOG.info("Processed: {}", idcommerce);
-                        imagesService.getImages(idcommerce);
+                        imagesService.getImages(idcommerce, response.getMessage().getMetadata());
                         transaction.AckMessage();
 //                        Event event = new Event();
 //                        event.setEventId(response.getMessage().getMessageID());
@@ -100,7 +100,7 @@ public class ListenerComponent implements StreamObserver<EventReceive> {
 
                             //transaction.RejectMessage();
                     }
-                    Thread.sleep(10000);
+//                    Thread.sleep(10000);
                 } catch (Exception e) {
 					LOG.error("Error", e);
                 }

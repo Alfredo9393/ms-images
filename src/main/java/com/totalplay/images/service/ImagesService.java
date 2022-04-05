@@ -10,6 +10,6 @@ package com.totalplay.images.service;
  * @author APerez
  */
 public interface ImagesService  {
-    public Object getImages(String trade_identifier);
-    public void publishResultImages(Object object);
+    public Object getImages(String trade_identifier, String metadata);
+    public void publishResultImages(Object object, String metadata);
 }

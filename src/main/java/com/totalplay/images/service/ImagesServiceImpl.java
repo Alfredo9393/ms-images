@@ -38,7 +38,7 @@ public class ImagesServiceImpl implements ImagesService{
     }
         
     @Override
-    public Object getImages(String idCommerce) {
+    public Object getImages(String idCommerce, String metadata) {
         
         Object object = null;
         try{
@@ -54,13 +54,13 @@ public class ImagesServiceImpl implements ImagesService{
             System.out.println("invoke http://IP:8090/imagesfirebase: "+ex);
         }
         
-        publishResultImages(object);
+        publishResultImages(object, metadata);
            
         return object;
     }
 
     @Override
-    public void publishResultImages(Object object) {
+    public void publishResultImages(Object object, String metadata) {
 //        Event event = new Event();
 //        event.setEventId(getid());
 //
@@ -84,8 +84,12 @@ public class ImagesServiceImpl implements ImagesService{
     	try {
     		Queue queue = new Queue("chanel-images-response", "chanel-images-response", "localhost:50000");
         	//System.out.println("Sending: {}", idCommerce);
-            final SendMessageResult result = queue.SendQueueMessage(new Message()
-                    .setBody(Converter.ToByteArray(object)));
+    		Message message = new Message();
+        	message.setBody(Converter.ToByteArray(object));
+        	message.setMetadata(metadata);
+//        	LOG.info("MessageID: %d, Body: %s", message.getMessageID(),
+//        	          Converter.FromByteArray(message.getMessage().getBody()));
+            final SendMessageResult result = queue.SendQueueMessage(message);
 
         } catch (ServerAddressNotSuppliedException | IOException e) {
 
